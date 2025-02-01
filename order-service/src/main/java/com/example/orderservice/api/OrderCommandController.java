@@ -4,7 +4,7 @@ import com.example.orderservice.command.CreateOrderCommand;
 import com.example.orderservice.dto.CreateOrderDto;
 import com.example.orderservice.query.FindAllOrdersQuery;
 import com.example.orderservice.query.FindOrderQuery;
-import com.example.orderservice.query.Order;
+import com.example.orderservice.entity.Order;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;

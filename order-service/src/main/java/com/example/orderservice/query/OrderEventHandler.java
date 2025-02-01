@@ -1,33 +1,36 @@
 package com.example.orderservice.query;
 
+import com.example.orderservice.entity.Order;
+import com.example.orderservice.enumeration.OrderStatus;
 import com.example.orderservice.event.OrderCreatedEvent;
+import com.example.orderservice.repository.OrderRepository;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import lombok.RequiredArgsConstructor;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class OrderEventHandler {
 
-  private final ConcurrentMap<String, Order> orderStore = new ConcurrentHashMap<>();
+  private final OrderRepository orderRepository;
 
   @EventHandler
   public void on(OrderCreatedEvent event) {
     Order order = Order.builder()
-        .orderId(event.getOrderId())
+        .id(event.getOrderId())
         .productId(event.getProductId())
         .quantity(event.getQuantity())
         .userId(event.getUserId())
         .status(OrderStatus.CREATED)
         .build();
-    orderStore.put(event.getOrderId(), order);
+    orderRepository.save(order);
   }
 
   @QueryHandler
   public List<Order> handle(FindAllOrdersQuery query) {
-    return new ArrayList<>(orderStore.values());
+    return new ArrayList<>(orderRepository.findAll());
   }
 }

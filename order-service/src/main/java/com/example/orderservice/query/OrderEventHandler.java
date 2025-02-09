@@ -33,4 +33,11 @@ public class OrderEventHandler {
   public List<Order> handle(FindAllOrdersQuery query) {
     return new ArrayList<>(orderRepository.findAll());
   }
+
+  /*@QueryHandler
+  public Order handle(FindOrderQuery query) {
+    return orderRepository.findById(query.getOrderId());
+  }*/
+
+
 }
